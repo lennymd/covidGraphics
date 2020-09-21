@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Country Index Chart</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./../css/pais.css" />
+    <script src="./../js/d3.v5.min.js"></script>
+    <script src="./../js/pais.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <!-- copy after this -->
+      <div class="row">
+        <div class="col-md-3">
+          <div class="lenny_stateContainer" id="stateContainer_positivity">
+            <div id="stateWrapper_positivity" class="lenny_stateWrapper">
+              <ul id="stateList_positivity"></ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <figure id="wrapper_positivity" class="lenny_chartWrapper">
+            <!-- start tooltip -->
+            <div id="tooltip_positivity" class="lenny_chartTooltip">
+              <div id="tooltipHeader_positivity" class="lenny_tooltipHeader">
+                <span></span>
+              </div>
+              <table id="tooltipContent_positivity">
+                <tr></tr>
+              </table>
+            </div>
+            <!-- end tooltip -->
+          </figure>
+        </div>
+      </div>
+      <!-- copy before this -->
+    </div>
+
+    <!-- chart code -->
+    <script src="./draw-index.js"></script>
+    <script>
+      indexLineChart({
+        country: 'mexico',
+        yVariable: 'mobility_index',
+        yRank: 'ranking_mobility_accumulated',
+        useBaseline: true,
+        usePercentage: true,
+        chartKeyword: 'positivity',
+      });
+    </script>
+  </body>
+</html>

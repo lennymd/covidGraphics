@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+#chart_container_policy {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+#chart_container_policy .domain,
+#chart_container_policy .tick text {
+  display: none;
+}
+
+.tick line {
+  stroke: #d2d3d4;
+  stroke-dasharray: 4px 2px;
+}
+
+.state_card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3px;
+}
+
+section > h4 {
+  margin-bottom: 0;
+}
+
+.comparison_line {
+  stroke: #333333;
+}
+
+.small_anchor {
+  font-size: 14px;
+  fill: #333333;
+  stroke: #333333;
+}

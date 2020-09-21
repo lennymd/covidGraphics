@@ -1,0 +1,67 @@
+.chart {
+  text-align: left;
+}
+#wrapper_policy_latam_main {
+  position: relative;
+  font-family: 'Open Sans', sans-serif;
+}
+#wrapper_policy_latam_main .domain {
+  display: none;
+}
+
+.y_axis {
+  font-size: 13px;
+}
+
+.tick line {
+  stroke: #d2d3d4;
+  stroke-dasharray: 4px 2px;
+}
+
+.x_axis .tick text {
+  font-size: 11px;
+}
+
+#country_wrapper_policy_latam {
+  height: 520px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+#country_list_policy_latam {
+  list-style: none;
+  margin-top: 20px;
+}
+
+#country_container_policy_latam {
+  background-color: #f2f2f2;
+  height: 550px;
+}
+
+.listening_rect {
+  fill: transparent;
+  z-index: 0;
+}
+
+#tooltip_policy_latam {
+  position: absolute;
+  padding: 7px;
+  background-color: white;
+  border: 1px solid black;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+#tooltipHeader_policy_latam {
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+#tooltipContent_policy_latam .tooltip_country {
+  font-weight: 700;
+}
+#tooltipContent_policy_latam .tooltip_country_value {
+  padding-left: 30px;
+  font-weight: 700;
+  text-align: right;
+}

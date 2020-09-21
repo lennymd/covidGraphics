@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LATAM Index Chart</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <script src="./../js/d3.v5.min.js"></script>
+    <script src="./../js/pais.js"></script>
+    <link rel="stylesheet" href="./../css/pais.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- copy after this -->
+      <div class="row">
+        <div class="col-md-9">
+          <figure id="wrapper_positivity-latam" class="lenny_chartWrapper">
+            <!-- start tooltip -->
+            <div id="tooltip_positivity-latam" class="lenny_chartTooltip">
+              <div
+                id="tooltipHeader_positivity-latam"
+                class="lenny_tooltipHeader"
+              >
+                <span></span>
+              </div>
+              <table id="tooltipContent_positivity-latam">
+                <tr></tr>
+              </table>
+            </div>
+            <!-- end tooltip -->
+          </figure>
+        </div>
+        <div class="col-md-3">
+          <div
+            class="lenny_stateContainer"
+            id="countryContainer_positivity-latam"
+          >
+            <div
+              id="countryWrapper_positivity-latam"
+              class="lenny_stateWrapper"
+            >
+              <ul id="countryList_positivity-latam"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- copy before this -->
+    </div>
+
+    <!-- chart code -->
+    <script src="./draw-index-latam.js"></script>
+    <script>
+      indexLineChart_LATAM({
+        yVariable: 'mobility_index',
+        useRegion: false,
+        useBaseline: true,
+        usePercentage: true,
+        chartKeyword: 'positivity-latam',
+      });
+    </script>
+  </body>
+</html>

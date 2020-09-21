@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Updating counts by country</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <style>
+      /* copy start */
+      #latest_numbers .country_delta {
+        font-size: 75%;
+        margin-right: 2%;
+        color: #171717;
+        opacity: 0.5;
+      }
+
+      #latest_numbers tbody th {
+        font-size: 90%;
+      }
+      /* copy end */
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- start copy -->
+      <div class="row">
+        <div class="col">
+          <table id="latest_numbers" class="table table-hover">
+            <caption>
+              Last Updated:
+              <span id="last_updated"></span>
+              <br />
+              Source:
+              <a href="https://coronavirus.jhu.edu/map.html"
+                >John Hopkins Coronavirus Resource Center</a
+              >
+            </caption>
+            <thead>
+              <th scope="col" class="text-left">Country</th>
+              <th scope="col" class="text-right">Confirmed Cases</th>
+              <th scope="col" class="text-right">Deaths</th>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Argentina</th>
+                <td class="text-right">
+                  <span id="argentina_deltaCases" class="country_delta"></span
+                  >&nbsp;<span id="argentina_cases"></span>
+                </td>
+                <td class="text-right">
+                  <span id="argentina_deltaDeaths" class="country_delta"></span
+                  >&nbsp;<span id="argentina_deaths"></span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Belize</th>
+                <td class="text-right">
+                  <span id="belize_deltaCases" class="country_delta"></span
+                  >&nbsp;<span id="belize_cases"></span>
+                </td>
+                <td class="text-right">
+                  <span id="belize_deltaDeaths" class="country_delta"></span
+                  >&nbsp;<span id="belize_deaths"></span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Bolivia</th>
+                <td class="text-right">
+                  <span id="bolivia_deltaCases" class="country_delta"></span
+                  >&nbsp;<span id="bolivia_cases"></span>
+                </td>
+                <td class="text-right">
+                  <span id="bolivia_deltaDeaths" class="country_delta"></span
+                  >&nbsp;<span id="bolivia_deaths"></span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Brazil</th>
+                <td class="text-right">
+                  <span id="brazil_deltaCases" class="country_delta"></span
+                  >&nbsp;<span id="brazil_cases"></span>
+                </td>
+                <td class="text-right">
+                  <span id="brazil_deltaDeaths" class="country_delta"></span
+                  >&nbsp;<span id="brazil_deaths"></span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Chile</th>
+                <td class="text-right">
+                  <span id="chile_deltaCases" class="country_delta"></span
+                  >&nbsp;<span id="chile_cases"></span>
+                </td>
+                <td class="text-right">
+                  <span id="chile_deltaDeaths" class="country_delta"></span
+                  >&nbsp;<span id="chile_deaths"></span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Colombia</th>
+                <td class="text-right">
+                  <span id="colombia_deltaCases" class="country_delta"></span
+                  >&nbsp;<span id="colombia_cases"></span>
+                </td>
+                <td class="text-right">
+                  <span id="colombia_deltaDeaths" class="country_delta"></span
+                  >&nbsp;<span id="colombia_deaths"></span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Costa Rica</th>
+                <td class="text-right">
+                  <span id="costarica_deltaCases" class="country_delta"></span
+                  >&nbsp;<span id="costarica_cases"></span>
+                </td>
+                <td class="text-right">
+                  <span id="costarica_deltaDeaths" class="country_delta"></span
+                  >&nbsp;<span id="costarica_deaths"></span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Cuba</th>
+                <td class="text-right">
+                  <span id="cuba_deltaCases" class="country_delta"></span
+                  >&nbsp;<span id="cuba_cases"></span>
+                </td>
+                <td class="text-right">
+                  <span id="cuba_deltaDeaths" class="country_delta"></span
+                  >&nbsp;<span id="cuba_deaths"></span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Dominican Republic</th>
+                <td class="text-right">
+                  <span
+                    id="dominicanrepublic_deltaCases"
+                    class="country_delta"
+                  ></span
+                  >&nbsp;<span id="dominicanrepublic_cases"></span>
+                </td>
+                <td class="text-right">
+                  <span
+                    id="dominicanrepublic_deltaDeaths"
+                    class="country_delta"
+                  ></span
+                  >&nbsp;<span id="dominicanrepublic_deaths"></span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Ecuador</th>
+                <td class="text-right">
+                  <span id="ecuador_deltaCases" class="country_delta"></span
+                  >&nbsp;<span id="ecuador_cases"></span>
+                </td>
+                <td class="text-right">
+                  <span id="ecuador_deltaDeaths" class="country_delta"></span
+                  >&nbsp;<span id="ecuador_deaths"></span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">El Salvador</th>
+                <td class="text-right">
+                  <span id="elsalvador_deltaCases" class="country_delta"></span
+                  >&nbsp;<span id="elsalvador_cases"></span>
+                </td>
+                <td class="text-right">
+                  <span id="elsalvador_deltaDeaths" class="country_delta"></span
+                  >&nbsp;<span id="elsalvador_deaths"></span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Guatemala</th>
+                <td class="text-right">
+                  <span id="guatemala_deltaCases" class="country_delta"></span
+                  >&nbsp;<span id="guatemala_cases"></span>
+                </td>
+                <td class="text-right">
+                  <span id="guatemala_deltaDeaths" class="country_delta"></span
+                  >&nbsp;<span id="guatemala_deaths"></span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Honduras</th>
+                <td class="text-right">
+                  <span id="honduras_deltaCases" class="country_delta"></span
+                  >&nbsp;<span id="honduras_cases"></span>
+                </td>
+                <td class="text-right">
+                  <span id="honduras_deltaDeaths" class="country_delta"></span
+                  >&nbsp;<span id="honduras_deaths"></span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Mexico</th>
+                <td class="text-right">
+                  <span id="mexico_deltaCases" class="country_delta"></span
+                  >&nbsp;<span id="mexico_cases"></span>
+                </td>
+                <td class="text-right">
+                  <span id="mexico_deltaDeaths" class="country_delta"></span
+                  >&nbsp;<span id="mexico_deaths"></span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Nicaragua</th>
+                <td class="text-right">
+                  <span id="nicaragua_deltaCases" class="country_delta"></span
+                  >&nbsp;<span id="nicaragua_cases"></span>
+                </td>
+                <td class="text-right">
+                  <span id="nicaragua_deltaDeaths" class="country_delta"></span
+                  >&nbsp;<span id="nicaragua_deaths"></span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Panama</th>
+                <td class="text-right">
+                  <span id="panama_deltaCases" class="country_delta"></span
+                  >&nbsp;<span id="panama_cases"></span>
+                </td>
+                <td class="text-right">
+                  <span id="panama_deltaDeaths" class="country_delta"></span
+                  >&nbsp;<span id="panama_deaths"></span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Paraguay</th>
+                <td class="text-right">
+                  <span id="paraguay_deltaCases" class="country_delta"></span
+                  >&nbsp;<span id="paraguay_cases"></span>
+                </td>
+                <td class="text-right">
+                  <span id="paraguay_deltaDeaths" class="country_delta"></span
+                  >&nbsp;<span id="paraguay_deaths"></span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Peru</th>
+                <td class="text-right">
+                  <span id="peru_deltaCases" class="country_delta"></span
+                  >&nbsp;<span id="peru_cases"></span>
+                </td>
+                <td class="text-right">
+                  <span id="peru_deltaDeaths" class="country_delta"></span
+                  >&nbsp;<span id="peru_deaths"></span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Uruguay</th>
+                <td class="text-right">
+                  <span id="uruguay_deltaCases" class="country_delta"></span
+                  >&nbsp;<span id="uruguay_cases"></span>
+                </td>
+                <td class="text-right">
+                  <span id="uruguay_deltaDeaths" class="country_delta"></span
+                  >&nbsp;<span id="uruguay_deaths"></span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Venezuela</th>
+                <td class="text-right">
+                  <span id="venezuela_deltaCases" class="country_delta"></span
+                  >&nbsp;<span id="venezuela_cases"></span>
+                </td>
+                <td class="text-right">
+                  <span id="venezuela_deltaDeaths" class="country_delta"></span
+                  >&nbsp;<span id="venezuela_deaths"></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- end copy -->
+    </div>
+
+    <script src="./../d3.v5.js"></script>
+    <script src="./countCases.js"></script>
+  </body>
+</html>
