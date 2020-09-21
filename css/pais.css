@@ -1,0 +1,108 @@
+@charset "UTF-8";
+
+label {
+  margin-left: 3px;
+}
+
+.tick line {
+  stroke: #171717;
+  stroke-dasharray: 1px 3px;
+  opacity: 0.75;
+}
+
+.x_axis .tick line {
+  opacity: 0.3;
+}
+
+.x_axis .tick text {
+  font-size: 11px;
+}
+
+.y_axis {
+  font-size: 13px;
+}
+
+.state,
+.country {
+  opacity: 0.85;
+}
+
+.chart {
+  text-align: left;
+}
+
+.listening_rect {
+  fill: transparent;
+  z-index: 0;
+}
+
+.lenny_chartWrapper {
+  position: relative;
+  font-family: "Open Sans", sans-serif;
+}
+
+.domain {
+  display: none;
+}
+
+.lenny_stateWrapper {
+  height: 520px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.lenny_stateContainer {
+  background-color: #f2f2f2;
+  height: 550px;
+}
+
+.lenny_stateContainer ul,
+.lenny_countryContainer ul {
+  list-style: none;
+  margin-top: 20px;
+  padding-left: 20px;
+}
+
+.input_label {
+  font-size: 14px;
+}
+
+.lenny_chartTooltip {
+  position: absolute;
+  padding: 7px;
+  background-color: white;
+  border: 1px solid black;
+  font-size: 16px;
+  font-weight: 700;
+  opacity: 0;
+}
+
+.lenny_tooltipHeader {
+  font-size: 1.5em;
+}
+
+.tooltip_value,
+.tooltip_country_value {
+  text-align: left;
+}
+
+.tooltip_state_name {
+  max-width: 180px;
+  word-wrap: break-word;
+}
+
+span.uncertaintyRange {
+  color: #666;
+  font-weight: 500;
+}
+
+#ihmeContent td:nth-child(2),
+#ihmeContent th:nth-child(2),
+#ihmeContent td:last-child,
+#ihmeContent th:last-child {
+  padding-left: 20px;
+}
+
+#ihmeContent_title th {
+  font-weight: 500;
+}

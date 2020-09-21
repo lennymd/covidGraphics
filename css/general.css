@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+html {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.x_axis .tick line {
+  opacity: 0.5;
+}
+
+.states,
+.country {
+  opacity: 0.75;
+}
+/* Add more to this */
