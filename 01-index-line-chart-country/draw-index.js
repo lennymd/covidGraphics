@@ -29,7 +29,7 @@ async function indexLineChart({
 
   // Download data
   let dataset = await d3.csv(
-    `https://raw.githubusercontent.com/lennymartinez/covid_latam/master/data/${country}_data_latest.csv`
+    `https://raw.githubusercontent.com/lennymartinez/covidGraphics/main/data/${country}_data_latest.csv`
   );
 
   // Set up data accessors -- shorthand functions for accessing the different variables.
