@@ -18,7 +18,7 @@ async function indexLineChart_LATAM({
 
   // 1. Get data
   const dataset = await d3.csv(
-    `https://raw.githubusercontent.com/lennymartinez/covidGraphics/main/data/latam_latest.csv`
+    `https://raw.githubusercontent.com/lennym/covidGraphics/main/data/latam_latest.csv`
   );
 
   // set data accessors
