@@ -42,7 +42,7 @@ wantedCountries <- c(
 
 df <- read_csv("Reference_hospitalization_all_locs.csv")
 df_filtered <- df %>%
-  select(any_of(wantedCols)) %>%
+  select(all_of(wantedCols)) %>%
   filter(location_name %in% wantedCountries) %>%
   mutate(location_name = str_replace(location_name,
                                      "\\(Plurinational State of\\)", ""))
