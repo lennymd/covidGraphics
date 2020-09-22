@@ -53,7 +53,7 @@ label {
 
 .lenny_stateContainer {
   background-color: #f2f2f2;
-  height: 550px;
+  height: 530px;
 }
 
 .lenny_stateContainer ul,
@@ -76,19 +76,21 @@ label {
   font-weight: 700;
   opacity: 0;
 }
-
+.lenny_chartTooltip table {
+  margin-top: 7px;
+}
 .lenny_tooltipHeader {
-  font-size: 1.5em;
+  font-size: 1.4rem;
 }
 
-.tooltip_value,
-.tooltip_country_value {
+.tooltip_stateName {
   text-align: left;
-}
-
-.tooltip_state_name {
   max-width: 180px;
   word-wrap: break-word;
+}
+.tooltip_stateValue {
+  text-align: right;
+  padding-left: 20px;
 }
 
 span.uncertaintyRange {
