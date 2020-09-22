@@ -76,26 +76,27 @@ label {
   font-weight: 700;
   opacity: 0;
 }
+
 .lenny_chartTooltip table {
   margin-top: 7px;
+  width: 100%;
 }
+
 .lenny_tooltipHeader {
   font-size: 1.4rem;
 }
 
-.tooltip_stateName {
+.tooltip_stateName,
+.tooltip_countryName {
   text-align: left;
   max-width: 180px;
   word-wrap: break-word;
 }
-.tooltip_stateValue {
+
+.tooltip_stateValue,
+.tooltip_countryValue {
   text-align: right;
   padding-left: 20px;
-}
-
-span.uncertaintyRange {
-  color: #666;
-  font-weight: 500;
 }
 
 #ihmeContent td:nth-child(2),
