@@ -14,7 +14,7 @@ async function indexLineChart_LATAM({
   // chartKeyword: keyword for picking the ids from the document.
 
   // 0. set language for dates
-  setLocale();
+  setTimeLanguage();
 
   // 1. Get data
   const dataset = await d3.csv(
@@ -34,7 +34,7 @@ async function indexLineChart_LATAM({
     .key(countryCodeAccessor)
     .entries(dataset);
 
-  const latam = datasetByCountryCode.filter(d => d.key == 'LATAM');
+  // const latam = datasetByCountryCode.filter(d => d.key == 'LATAM');
   const countries = datasetByCountryCode.filter(d => d.key != 'LATAM');
 
   // 2. create dimensions
@@ -153,19 +153,19 @@ async function indexLineChart_LATAM({
     .attr('d', d => lineGenerator(d.values));
 
   // add national data
-  if (useRegion) {
-    bounds
-      .selectAll('.region')
-      .data(latam)
-      .enter()
-      .append('path')
-      .attr('class', 'region')
-      .attr('fill', 'none')
-      .attr('stroke', '#333333')
-      .attr('stroke-dasharray', '9px 2px')
-      .attr('stroke-width', 2.5)
-      .attr('d', d => lineGenerator(d.values));
-  }
+  // if (useRegion) {
+  //   bounds
+  //     .selectAll('.region')
+  //     .data(latam)
+  //     .enter()
+  //     .append('path')
+  //     .attr('class', 'region')
+  //     .attr('fill', 'none')
+  //     .attr('stroke', '#333333')
+  //     .attr('stroke-dasharray', '9px 2px')
+  //     .attr('stroke-width', 2.5)
+  //     .attr('d', d => lineGenerator(d.values));
+  // }
 
   const addCountryLine = _countryCode => {
     // This function draws the active version of a country line.
@@ -321,7 +321,7 @@ async function indexLineChart_LATAM({
 
     // 2. Get list of all active states into one array. Make sure national data is first, and then every other thing that follows is alphabetized
     const unsortedCountries = [];
-    const activeCountries = useRegion ? ['LATAM'] : [];
+    const activeCountries = [];
     let displayFormat, regionalSpelling;
     if (_lang == 'pt-br' || _lang == 'es-ES') {
       displayFormat = d3.timeFormat('%d %B');
@@ -433,7 +433,7 @@ async function indexLineChart_LATAM({
   }
 
   function onMouseLeave() {
-    const activeCountries = useRegion ? ['LATAM'] : [];
+    const activeCountries = [];
     tooltip.style('opacity', 0);
     tooltipLine.style('opacity', 0);
     bounds.selectAll(`.intersection_${chartKeyword}`).remove();
