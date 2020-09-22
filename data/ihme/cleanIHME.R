@@ -43,15 +43,9 @@ wantedCountries <- c(
 df <- read_csv("Reference_hospitalization_all_locs.csv")
 df_filtered <- df %>%
   select(any_of(wantedCols)) %>%
-  filter(location_name %in% wantedCountries)
-
-bolivia <-
-  df_filtered %>% filter(location_name == "Bolivia (Plurinational State of)")
-k <- mutate_if(bolivia,
-               is.character,
-               str_replace_all,
-               pattern = "Bolivia (Plurinational State of)",
-               replacement = "Bolivia")
+  filter(location_name %in% wantedCountries) %>%
+  mutate(location_name = str_replace(location_name,
+                                     "\\(Plurinational State of\\)", ""))
 
 write_csv(df_filtered, 'ihmeClean.csv', col_names =
             TRUE)
