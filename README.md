@@ -20,3 +20,7 @@ For the various indices and rates being graphed, I consolidated different charts
 This object can be modified for each use case.
 
 I'm now working on a version of this chart that works with latin America data.
+
+## IHME data
+
+every time we work with IHME data we have to run the cleanIHME R script to keep only the columns and rows we care about and keep files light.
