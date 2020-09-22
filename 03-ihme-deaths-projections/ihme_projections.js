@@ -4,9 +4,8 @@ async function ihmeChart({chartKeyword, cutoffDate}) {
 
   // 1. access data
   // TODO use absolute url from github
-  const dataset = await d3.csv(
-    `./../data/ihme/Reference_hospitalization_all_locs.csv`
-  );
+  const dataset = await d3.csv(`./../data/ihme/ihmeClean.csv`);
+  // TODO remove this part once I clean it with R
   // find and replace all of Bolivia's long names with short name.
   const replace = dataset.filter(
     d => d.location_name == 'Bolivia (Plurinational State of)'
@@ -50,6 +49,7 @@ async function ihmeChart({chartKeyword, cutoffDate}) {
     'El Salvador',
   ].sort();
 
+  // TODO remove this part once I clean it with R
   // filter our loaded dataset and only keep countries we care about
   const countryData = dataset.filter(d =>
     ihmeCountryList.some(i => countryNameAccessor(d) == i)

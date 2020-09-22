@@ -5,9 +5,53 @@
 
 library(tidyverse)
 
+wantedCols <-
+  c(
+    "location_name",
+    "date",
+    "location_id",
+    "deaths_mean_smoothed",
+    "deaths_lower_smoothed",
+    "deaths_upper_smoothed"
+  )
+
+wantedCountries <- c(
+  'Mexico',
+  'Ecuador',
+  'Chile',
+  'Argentina',
+  'Bolivia (Plurinational State of)',
+  'Guyana',
+  'Colombia',
+  'Brazil',
+  'Trinidad and Tobago',
+  'Costa Rica',
+  'Panama',
+  'Nicaragua',
+  'Honduras',
+  'Paraguay',
+  'Suriname',
+  'Uruguay',
+  'Peru',
+  'Cuba',
+  'Dominican Republic',
+  'Guatemala',
+  'Haiti',
+  'El Salvador'
+)
+
 df <- read_csv("Reference_hospitalization_all_locs.csv")
+df_filtered <- df %>%
+  select(any_of(wantedCols)) %>%
+  filter(location_name %in% wantedCountries)
 
-wantedCols <- c("location_name","date","location_id","deaths_mean_smoothed",
-                "deaths_lower_smoothed","deaths_upper_smoothed")
+bolivia <-
+  df_filtered %>% filter(location_name == "Bolivia (Plurinational State of)")
+k <- mutate_if(bolivia,
+               is.character,
+               str_replace_all,
+               pattern = "Bolivia (Plurinational State of)",
+               replacement = "Bolivia")
 
-df %>% select(any_of(wantedCols))
+write_csv(df_filtered, 'ihmeClean.csv', col_names =
+            TRUE)
