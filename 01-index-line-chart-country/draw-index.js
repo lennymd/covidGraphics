@@ -6,15 +6,13 @@ async function indexLineChart({
   usePercentage,
   chartKeyword,
 }) {
-  /*
-  This function works with country datasets and takes in the following arguments to create a line chart:
-  'country': name of the country to load the data file
-  'yVariable': column name of y-axis variable
-  'yRank': variable used for ranking and highlighting best and worst.
-  'useBaseline': boolean for drawing the zero baseline.
-  'usePercentage': boolean for converting y-axis into %
-  'chartKeyword': keyword for picking the ids from the document.
-  */
+  // This function works with country datasets and takes in the following arguments to create a line chart:
+  // 'country': name of the country to load the data file
+  // 'yVariable': column name of y-axis variable
+  // 'yRank': variable used for ranking and highlighting best and worst.
+  // 'useBaseline': boolean for drawing the zero baseline.
+  // 'usePercentage': boolean for converting y-axis into %
+  // 'chartKeyword': keyword for picking the ids from the document.
 
   // Set the right language for months and days
   setTimeLanguage();
@@ -44,7 +42,7 @@ async function indexLineChart({
   // Organize data for visualizing
 
   // (a) remove values that are greater than 100%.
-  // TODO updated this when Hector updates mexico data to base 100 for testpositivity_rate
+  // TODO update this when Hector updates mexico data to base 100 for testpositivity_rate
   if (yVariable == 'testpositivity_rate' && country == 'mexico') {
     dataset = dataset.filter(d => yAccessor(d) < 1);
   }
@@ -63,7 +61,7 @@ async function indexLineChart({
   const width = document.getElementById(wrapperElt).parentElement.clientWidth;
   let dimensions = {
     width: width,
-    height: 650,
+    height: 535,
     margin: {top: 20, right: 35, bottom: 40, left: 15},
   };
   dimensions.boundedWidth =
@@ -104,6 +102,7 @@ async function indexLineChart({
   const colorNational = '#333';
   const colorPeripheral = '#111';
   const colorGrey = '#d2d3d4';
+
   // Draw yAxis
   const yAxisGenerator = d3
     .axisRight()
@@ -186,12 +185,11 @@ async function indexLineChart({
     .attr('stroke-width', 2.5)
     .attr('d', d => lineGenerator(d.values));
 
-  /*
-  Highlight the first and last ranked for whatever the yVariable is.
-  Get the latest day. Filter the dataset to include data from latestDay. Nest filtered dataset using the metricAccessor.
-  Rank 1 state will be d.key == 1,
-  Rank Last will be d.key == states.length
-  */
+  // Highlight the first and last ranked for whatever the yVariable is.
+  // Get the latest day. Filter the dataset to include data from latestDay. Nest filtered dataset using the metricAccessor.
+  // Rank 1 state will be d.key == 1,
+  // Rank Last will be d.key == states.length
+
   const latestDay = d3.max(dataset.map(dayAccessor));
   const latestData = dataset.filter(d => dayAccessor(d) == latestDay);
   const statesRanked = d3
@@ -199,6 +197,7 @@ async function indexLineChart({
     .key(metricAccessor)
     .sortKeys(d3.ascending)
     .entries(latestData);
+
   // highlightStates is an array with the exact observations for the first and last ranked states to highlight
   const highlightStates = [
     statesRanked.filter(d => d.key == 1)[0].values[0],
@@ -285,9 +284,9 @@ async function indexLineChart({
     .select(`#tooltip_${chartKeyword}`)
     .style('top', `${dimensions.margin.top}px`);
 
-  // if we are using baseline & percentage, it's likely mobility so put the tooltip box on the right
+  // if we are using baseline & percentage, it's likely mobility closer to the middle
   if (useBaseline && usePercentage) {
-    tooltip.style('right', `${dimensions.margin.right * 1.25}px`);
+    tooltip.style('left', `${dimensions.margin.left * 10}px`);
   } else {
     tooltip.style('left', `${dimensions.margin.left}px`);
   }
@@ -327,10 +326,11 @@ async function indexLineChart({
       const code = element.getAttribute('id').split('_')[0];
       activeStates.push(code);
     });
+
     // Sort active states and prepend National so that national data is always on top.
     const nationalSpelling =
       _lang == 'pt-br' || _lang == 'es-ES' ? 'Nacional' : 'National';
-    activeStates.sort().unshift(nationalSpelling);
+    activeStates.sort().unshift('Nacional');
 
     // Clear tooltip content and remove any intersection dots
     tooltipHeader.selectAll('*').remove();
