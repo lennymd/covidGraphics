@@ -42,10 +42,10 @@ async function indexLineChart({
   // Organize data for visualizing
 
   // (a) remove values that are greater than 100%.
-  // TODO update this when Hector updates mexico data to base 100 for testpositivity_rate
-  if (yVariable == 'testpositivity_rate' && country == 'mexico') {
-    dataset = dataset.filter(d => yAccessor(d) < 1);
-  }
+  // TODO update this when Hector updates testpositivity_rate data to a 0 to 100 scale.
+  // if (yVariable == 'testpositivity_rate' && country == 'mexico') {
+  //   dataset = dataset.filter(d => yAccessor(d) < 1);
+  // }
 
   // Group states by stateCode and separate into states and national data.
   const datasetByStateCode = d3
@@ -88,6 +88,10 @@ async function indexLineChart({
     .domain(d3.extent(dataset, yAccessor))
     .range([dimensions.boundedHeight, 0])
     .nice();
+  // TODO update this when Hector updates testpositivity_rate data to a 0 to 100 scale.
+  if (yVariable == 'testpositivity_rate' && country == 'mexico') {
+    yScale.domain([0, 1]).clamp(true);
+  }
   const xExtent = d3.extent(dataset, xAccessor);
   const xScale = d3
     .scaleTime()
@@ -111,7 +115,7 @@ async function indexLineChart({
 
   // Add percentage symbol to yAxis ticks when needed
   if (usePercentage) {
-    // TODO updated this when Hector updates mexico data to base 100 for testpositivity_rate
+    // TODO update this when Hector updates testpositivity_rate data to a 0 to 100 scale.
     if (yVariable == 'testpositivity_rate' && country == 'mexico') {
       yAxisGenerator.tickFormat(d => d3.format('.0p')(d));
     } else {
@@ -264,7 +268,8 @@ async function indexLineChart({
   d3.selectAll(`.checkbox_${chartKeyword}`).on('input', toggleStateLine);
   function toggleStateLine() {
     const code = this.name.split('_')[0];
-    const checkboxLabel = stateList.select(`[for=${code}_${chartKeyword}]`);
+    const selector = `${code}_${chartKeyword}`;
+    const checkboxLabel = stateList.select(`[for=${selector}]`);
 
     if (this.checked) {
       // checkbox just got turned on. Draw the active line and style the checkboxLabel
@@ -274,8 +279,10 @@ async function indexLineChart({
         .style('font-weight', 'bold');
     } else {
       // checkbox just got turned off. Remove the active line and reset the checkboxLabel
-      bounds.select(`#${code}_${chartKeyword}`).remove();
-      checkboxLabel.style('color', '#333').style('font-weight', 'normal');
+      bounds.select(`#${selector}`).remove();
+      checkboxLabel
+        .style('color', colorNational)
+        .style('font-weight', 'normal');
     }
   }
 
@@ -285,11 +292,8 @@ async function indexLineChart({
     .style('top', `${dimensions.margin.top}px`);
 
   // if we are using baseline & percentage, it's likely mobility closer to the middle
-  if (useBaseline && usePercentage) {
-    tooltip.style('left', `${dimensions.margin.left * 10}px`);
-  } else {
-    tooltip.style('left', `${dimensions.margin.left}px`);
-  }
+  const multiplier = useBaseline && usePercentage ? 10 : 1;
+  tooltip.style('left', `${dimensions.margin.left * multiplier}px`);
 
   const tooltipHeader = tooltip.select(`#tooltipHeader_${chartKeyword}`);
   const tooltipContent = tooltip.select(`#tooltipContent_${chartKeyword}`);
@@ -320,11 +324,12 @@ async function indexLineChart({
 
     // Create list of all active states.
     const activeStates = [];
-    Array.from(
-      document.getElementsByClassName(`active_${chartKeyword}`)
-    ).forEach(element => {
-      const code = element.getAttribute('id').split('_')[0];
-      activeStates.push(code);
+    const activeLinesHTML = document.getElementsByClassName(
+      `active_${chartKeyword}`
+    );
+    const activeLines = Array.from(activeLinesHTML);
+    activeLines.forEach(element => {
+      activeStates.push(element.getAttribute('id').split('_')[0]);
     });
 
     // Sort active states and prepend National so that national data is always on top.
@@ -376,7 +381,7 @@ async function indexLineChart({
         .append('td')
         .attr('class', 'tooltip_stateValue')
         .html(() => {
-          // TODO updated this when Hector updates mexico data to base 100 for testpositivity_rate
+          // TODO update this when Hector updates testpositivity_rate data to a 0 to 100 scale.
           const multiplier =
             usePercentage &&
             yVariable == 'testpositivity_rate' &&
@@ -384,7 +389,12 @@ async function indexLineChart({
               ? 100
               : 1;
           const suffix = usePercentage ? '%' : '';
-          return d3.format('.1f')(yValue * multiplier) + suffix;
+          const value = d3.format('.1f')(yValue * multiplier);
+          if (value > 100) {
+            return 100 + suffix;
+          } else {
+            return value + suffix;
+          }
         });
 
       // add dots
