@@ -22,6 +22,19 @@
     <div class="container">
       <!-- copy after this -->
       <div class="row">
+        <div class="col-md-3">
+          <div
+            class="lenny_stateContainer"
+            id="countryContainer_positivity-latam"
+          >
+            <div
+              id="countryWrapper_positivity-latam"
+              class="lenny_stateWrapper"
+            >
+              <ul id="countryList_positivity-latam"></ul>
+            </div>
+          </div>
+        </div>
         <div class="col-md-9">
           <figure id="wrapper_positivity-latam" class="lenny_chartWrapper">
             <!-- start tooltip -->
@@ -39,19 +52,6 @@
             <!-- end tooltip -->
           </figure>
         </div>
-        <div class="col-md-3">
-          <div
-            class="lenny_stateContainer"
-            id="countryContainer_positivity-latam"
-          >
-            <div
-              id="countryWrapper_positivity-latam"
-              class="lenny_stateWrapper"
-            >
-              <ul id="countryList_positivity-latam"></ul>
-            </div>
-          </div>
-        </div>
       </div>
       <!-- copy before this -->
     </div>
@@ -60,7 +60,7 @@
     <script src="./draw-index-latam.js"></script>
     <script>
       indexLineChart_LATAM({
-        yVariable: 'mobility_index',
+        yVariable: 'testpositivity_rate',
         useRegion: false,
         useBaseline: true,
         usePercentage: true,
