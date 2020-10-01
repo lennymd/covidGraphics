@@ -1,9 +1,9 @@
+// TODO check that we can highlight lines/areas by resetting the listeningRectangle.
 async function ihmeChart({chartKeyword, cutoffDate}) {
   // 0. check for language locale
   setTimeLanguage();
 
   // 1. access data
-  // TODO use absolute url from github
   const dataset = await d3.csv(
     `https://raw.githubusercontent.com/lennymd/covidGraphics/main//data/ihme/ihmeClean.csv`
   );
@@ -48,16 +48,11 @@ async function ihmeChart({chartKeyword, cutoffDate}) {
 
   // 2. create dimensions
   const wrapperElt = `wrapper_${chartKeyword}`;
-
+  const width = document.getElementById(wrapperElt).parentElement.clientWidth;
   let dimensions = {
-    width: document.getElementById(wrapperElt).parentElement.clientWidth,
-    height: 650,
-    margin: {
-      top: 15,
-      right: 15,
-      bottom: 40,
-      left: 60,
-    },
+    width: width,
+    height: 535,
+    margin: {top: 20, right: 35, bottom: 40, left: 15},
   };
   dimensions.boundedWidth =
     dimensions.width - dimensions.margin.left - dimensions.margin.right;
@@ -100,11 +95,15 @@ async function ihmeChart({chartKeyword, cutoffDate}) {
   // 5. draw peripherals -- part 1
   // TODO make a right axis
   const yAxisGenerator = d3
-    .axisLeft()
+    .axisRight()
     .scale(yScale)
     .tickSize(-dimensions.boundedWidth);
 
-  const yAxis = bounds.append('g').attr('class', 'y_axis').call(yAxisGenerator);
+  const yAxis = bounds
+    .append('g')
+    .attr('class', 'y_axis')
+    .call(yAxisGenerator)
+    .style('transform', `translateX(${dimensions.boundedWidth}px)`);
 
   const xAxisGenerator = d3
     .axisBottom()
@@ -327,8 +326,8 @@ async function ihmeChart({chartKeyword, cutoffDate}) {
   // make sure tooltip box is in the right place
   const tooltip = d3
     .select(`#tooltip_${chartKeyword}`)
-    .style('top', `${dimensions.margin.top * 2}px`)
-    .style('left', `${dimensions.margin.left * 1.25}px`);
+    .style('top', `${dimensions.margin.top}px`)
+    .style('left', `${dimensions.margin.left * 1}px`);
 
   const tooltipHeader = tooltip.select(`#tooltipHeader_${chartKeyword}`);
   const tooltipContent = tooltip.select(`#tooltipContent_${chartKeyword}`);
@@ -425,20 +424,20 @@ async function ihmeChart({chartKeyword, cutoffDate}) {
       // add countryName to row
       dataRow
         .append('td')
-        .attr('class', 'tooltip_country_name')
+        .attr('class', 'tooltip_countryName')
         .html(countryName)
         .style('color', color);
 
       // add value to row
       dataRow
         .append('td')
-        .attr('class', 'tooltip_country_value')
+        .attr('class', 'tooltip_countryValue')
         .html(() => yValue.toFixed(2));
 
       // add uncertainty range
       dataRow
         .append('td')
-        .attr('class', 'tooltip_country_value')
+        .attr('class', 'tooltip_countryValue')
         .html(() =>
           range > 0
             ? `${lowerBound.toFixed(2)} – ${upperBound.toFixed(2)}`

@@ -103,7 +103,7 @@ label {
 #ihmeContent th:nth-child(2),
 #ihmeContent td:last-child,
 #ihmeContent th:last-child {
-  padding-left: 20px;
+  padding-left: 10px;
 }
 
 #ihmeContent_title th {
