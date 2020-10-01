@@ -21,22 +21,18 @@ wantedCountries <- c(
   'Chile',
   'Argentina',
   'Bolivia (Plurinational State of)',
-  'Guyana',
   'Colombia',
   'Brazil',
-  'Trinidad and Tobago',
   'Costa Rica',
   'Panama',
   'Nicaragua',
   'Honduras',
   'Paraguay',
-  'Suriname',
   'Uruguay',
   'Peru',
   'Cuba',
   'Dominican Republic',
   'Guatemala',
-  'Haiti',
   'El Salvador'
 )
 
@@ -45,7 +41,7 @@ df_filtered <- df %>%
   select(all_of(wantedCols)) %>%
   filter(location_name %in% wantedCountries) %>%
   mutate(location_name = str_replace(location_name,
-                                     "\\(Plurinational State of\\)", ""))
+                                     " \\(Plurinational State of\\)", ""))
 
 write_csv(df_filtered, 'ihmeClean.csv', col_names =
             TRUE)
