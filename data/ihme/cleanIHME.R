@@ -41,7 +41,8 @@ df_filtered <- df %>%
   select(all_of(wantedCols)) %>%
   filter(location_name %in% wantedCountries) %>%
   mutate(location_name = str_replace(location_name,
-                                     " \\(Plurinational State of\\)", ""))
+                                     " \\(Plurinational State of\\)", "")) %>%
+  mutate(location_name = str_squish(location_name))
 
 write_csv(df_filtered, 'ihmeClean.csv', col_names =
             TRUE)
