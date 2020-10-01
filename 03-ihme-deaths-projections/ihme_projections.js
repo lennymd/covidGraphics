@@ -4,15 +4,9 @@ async function ihmeChart({chartKeyword, cutoffDate}) {
 
   // 1. access data
   // TODO use absolute url from github
-  const dataset = await d3.csv(`./../data/ihme/ihmeClean.csv`);
-  // TODO remove this part once I clean it with R
-  // find and replace all of Bolivia's long names with short name.
-  const replace = dataset.filter(
-    d => d.location_name == 'Bolivia (Plurinational State of)'
+  const dataset = await d3.csv(
+    `https://raw.githubusercontent.com/lennymd/covidGraphics/main//data/ihme/ihmeClean.csv`
   );
-  replace.forEach(_element => {
-    _element.location_name = 'Bolivia';
-  });
 
   // data accessors, shorthand for different columns
   const yAccessor = d => +d.deaths_mean_smoothed;
@@ -30,38 +24,26 @@ async function ihmeChart({chartKeyword, cutoffDate}) {
     'Chile',
     'Argentina',
     'Bolivia',
-    'Guyana',
     'Colombia',
     'Brazil',
-    'Trinidad and Tobago',
     'Costa Rica',
     'Panama',
     'Nicaragua',
     'Honduras',
     'Paraguay',
-    'Suriname',
     'Uruguay',
     'Peru',
-    'Cuba',
     'Dominican Republic',
     'Guatemala',
-    'Haiti',
     'El Salvador',
   ].sort();
-
-  // TODO remove this part once I clean it with R
-  // filter our loaded dataset and only keep countries we care about
-  const countryData = dataset.filter(d =>
-    ihmeCountryList.some(i => countryNameAccessor(d) == i)
-  );
 
   // nest filtered dataset so we draw 1 line per country
   const datasetByCountry = d3
     .nest()
     .key(countryNameAccessor)
     .sortKeys(d3.ascending)
-    .entries(countryData);
-
+    .entries(dataset);
   const cutoffDate_converted = dateParser(cutoffDate);
 
   // 2. create dimensions
@@ -100,7 +82,7 @@ async function ihmeChart({chartKeyword, cutoffDate}) {
 
   const yScale = d3
     .scaleLinear()
-    .domain([0, d3.max(countryData, upperProjectionAccessor)])
+    .domain([0, d3.max(dataset, upperProjectionAccessor)])
     .range([dimensions.boundedHeight, 0])
     .nice();
 
@@ -203,7 +185,7 @@ async function ihmeChart({chartKeyword, cutoffDate}) {
   // function for adding active Countries
   const activateCountry = locationID => {
     // select data from all the rows we already filtered
-    const country = countryData.filter(
+    const country = dataset.filter(
       d => locationIDAccessor(d) == locationID
     );
 
@@ -253,7 +235,7 @@ async function ihmeChart({chartKeyword, cutoffDate}) {
   ['Mexico', 'Brazil', 'Bolivia', 'Chile'].forEach(element => {
     // TWEAK get all the comments first and then code.
     // filter data for each country
-    const country = countryData.filter(d => countryNameAccessor(d) == element);
+    const country = dataset.filter(d => countryNameAccessor(d) == element);
     // get the locationID for the first row
     const countryId = locationIDAccessor(country[0]);
     // push locationIDs to a new array
@@ -297,7 +279,7 @@ async function ihmeChart({chartKeyword, cutoffDate}) {
     const countrySelector = `country_${element}_${chartKeyword}`;
 
     // find countryName based on location
-    const country = countryData.filter(d => element == d.location_id);
+    const country = dataset.filter(d => element == d.location_id);
     // TWEAK use countryNameAccessor();
     const countryName = country[0].location_name;
 
@@ -317,7 +299,7 @@ async function ihmeChart({chartKeyword, cutoffDate}) {
     const inputLabel = countryList.select(`[for=${this.name}]`);
 
     // get country name from locationID
-    const country = countryData.filter(d => locationID == d.location_id);
+    const country = dataset.filter(d => locationID == d.location_id);
     const countryName = country[0].location_name;
 
     // when you click a country's input box
@@ -392,7 +374,7 @@ async function ihmeChart({chartKeyword, cutoffDate}) {
     ).forEach(element => {
       // for each active countries add their countryName to unsortedCountries array.
       const locationID = element.getAttribute('id').split('_')[1];
-      const country = countryData.filter(
+      const country = dataset.filter(
         d => locationIDAccessor(d) == locationID
       );
       const countryName = countryNameAccessor(country[0]);
@@ -423,7 +405,7 @@ async function ihmeChart({chartKeyword, cutoffDate}) {
     // 6. add value for each active country to the tooltip
     activeCountries.forEach(element => {
       // a) get the data for the specific country filtered on that specific day
-      const country = countryData
+      const country = dataset
         .filter(d => countryNameAccessor(d) == element)
         .filter(d => d.date == closestDate.date);
       const point = country[0];

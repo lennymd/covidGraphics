@@ -30,7 +30,6 @@ wantedCountries <- c(
   'Paraguay',
   'Uruguay',
   'Peru',
-  'Cuba',
   'Dominican Republic',
   'Guatemala',
   'El Salvador'
