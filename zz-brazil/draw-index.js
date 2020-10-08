@@ -26,9 +26,7 @@ async function indexLineChart({
       : d3.timeFormat('%b %d');
 
   // Download data
-  let dataset = await d3.csv(
-    `https://raw.githubusercontent.com/lennymd/covidGraphics/main/data/${country}_data_latest.csv`
-  );
+  let dataset = await d3.csv(`brazil_data_latest.csv`);
 
   // Set up data accessors -- shorthand functions for accessing the different variables.
   const yAccessor = d => +d[`${yVariable}`];
@@ -61,7 +59,7 @@ async function indexLineChart({
   const width = document.getElementById(wrapperElt).parentElement.clientWidth;
   let dimensions = {
     width: width,
-    height: 535,
+    height: 600,
     margin: {top: 20, right: 35, bottom: 40, left: 15},
   };
   dimensions.boundedWidth =
@@ -221,197 +219,69 @@ async function indexLineChart({
       .attr('d', () => lineGenerator(state[0].values));
   };
 
-  highlightStates.forEach(element => {
-    const code = stateCodeAccessor(element);
-    addStateLine(code);
-  });
+  // highlightStates.forEach(element => {
+  //   const code = stateCodeAccessor(element);
+  //   addStateLine(code);
+  // });
+  mobility_extra = ['SC', 'CE', 'PI', 'AM', 'PA', 'MS'];
+  mobility_extra.forEach(element => addStateLine(element));
+  // const tooltipLine = bounds
+  //   .append('line')
+  //   .attr('id', `tooltipLine_${chartKeyword}`)
+  //   .attr('y1', 0)
+  //   .attr('y2', dimensions.boundedHeight)
+  //   .attr('stroke-width', 2)
+  //   .attr('stroke-dasharray', '7px 2px')
+  //   .attr('stroke', colorPeripheral)
+  //   .attr('opacity', 0);
 
-  const tooltipLine = bounds
-    .append('line')
-    .attr('id', `tooltipLine_${chartKeyword}`)
-    .attr('y1', 0)
-    .attr('y2', dimensions.boundedHeight)
-    .attr('stroke-width', 2)
-    .attr('stroke-dasharray', '7px 2px')
-    .attr('stroke', colorPeripheral)
-    .attr('opacity', 0);
+  // // Create Sidebar for toggling states
+  // const stateList = d3
+  //   .select(`#stateList_${chartKeyword}`)
+  //   .selectAll('input')
+  //   .data(states)
+  //   .enter()
+  //   .append('li')
+  //   .attr('class', d => `${d.key}_input`);
+  // stateList
+  //   .append('input')
+  //   .attr('class', `checkbox_${chartKeyword}`)
+  //   .attr('type', 'checkbox')
+  //   .attr('name', d => `${d.key}_${chartKeyword}`);
+  // stateList
+  //   .append('label')
+  //   .attr('class', `checkboxLabel checkboxLabel_${chartKeyword}`)
+  //   .attr('for', d => `${d.key}_${chartKeyword}`)
+  //   .html(d => stateNameAccessor(d.values[0]));
 
-  // Create Sidebar for toggling states
-  const stateList = d3
-    .select(`#stateList_${chartKeyword}`)
-    .selectAll('input')
-    .data(states)
-    .enter()
-    .append('li')
-    .attr('class', d => `${d.key}_input`);
-  stateList
-    .append('input')
-    .attr('class', `checkbox_${chartKeyword}`)
-    .attr('type', 'checkbox')
-    .attr('name', d => `${d.key}_${chartKeyword}`);
-  stateList
-    .append('label')
-    .attr('class', `checkboxLabel checkboxLabel_${chartKeyword}`)
-    .attr('for', d => `${d.key}_${chartKeyword}`)
-    .html(d => stateNameAccessor(d.values[0]));
+  // // make sure checkboxes are checked and labels are active for highlighted states
+  // highlightStates.forEach(element => {
+  //   const code = stateCodeAccessor(element);
+  //   const checkbox = stateList.select(`[name=${code}_${chartKeyword}]`);
+  //   const checkboxLabel = stateList.select(`[for=${code}_${chartKeyword}]`);
+  //   checkbox.property('checked', true);
+  //   checkboxLabel.style('color', colorScale(code)).style('font-weight', 'bold');
+  // });
 
-  // make sure checkboxes are checked and labels are active for highlighted states
-  highlightStates.forEach(element => {
-    const code = stateCodeAccessor(element);
-    const checkbox = stateList.select(`[name=${code}_${chartKeyword}]`);
-    const checkboxLabel = stateList.select(`[for=${code}_${chartKeyword}]`);
-    checkbox.property('checked', true);
-    checkboxLabel.style('color', colorScale(code)).style('font-weight', 'bold');
-  });
+  // // toggle State lines and their corresponding labels
+  // d3.selectAll(`.checkbox_${chartKeyword}`).on('input', toggleStateLine);
+  // function toggleStateLine() {
+  //   const code = this.name.split('_')[0];
+  //   const selector = `${code}_${chartKeyword}`;
+  //   const checkboxLabel = stateList.select(`[for=${selector}]`);
 
-  // toggle State lines and their corresponding labels
-  d3.selectAll(`.checkbox_${chartKeyword}`).on('input', toggleStateLine);
-  function toggleStateLine() {
-    const code = this.name.split('_')[0];
-    const selector = `${code}_${chartKeyword}`;
-    const checkboxLabel = stateList.select(`[for=${selector}]`);
-
-    if (this.checked) {
-      // checkbox just got turned on. Draw the active line and style the checkboxLabel
-      addStateLine(code);
-      checkboxLabel
-        .style('color', colorScale(code))
-        .style('font-weight', 'bold');
-    } else {
-      // checkbox just got turned off. Remove the active line and reset the checkboxLabel
-      bounds.select(`#${selector}`).remove();
-      checkboxLabel
-        .style('color', colorNational)
-        .style('font-weight', 'normal');
-    }
-  }
-
-  // prepare tooltip container for tooltip interaction
-  const tooltip = d3
-    .select(`#tooltip_${chartKeyword}`)
-    .style('top', `${dimensions.margin.top}px`);
-
-  // if we are using baseline & percentage, it's likely mobility closer to the middle
-  const multiplier = useBaseline && usePercentage ? 10 : 1;
-  tooltip.style('left', `${dimensions.margin.left * multiplier}px`);
-
-  const tooltipHeader = tooltip.select(`#tooltipHeader_${chartKeyword}`);
-  const tooltipContent = tooltip.select(`#tooltipContent_${chartKeyword}`);
-
-  // create listeningRect for tooltip interaction
-  const listeningRect = bounds
-    .append('rect')
-    .attr('class', 'listening_rect')
-    .attr('width', dimensions.boundedWidth)
-    .attr('height', dimensions.boundedHeight)
-    .on('mousemove', onMouseMove)
-    .on('mouseleave', onMouseLeave);
-
-  function onMouseMove() {
-    tooltip.style('opacity', 1);
-
-    // Get mouse position and translate it into date and y-value. Use this to find the closest date to your mouse position in the dataset. This is straight from Amelia's book.
-    const mousePosition = d3.mouse(this);
-    const hoveredDate = xScale.invert(mousePosition[0]);
-    const getDistanceFromHoveredDate = d =>
-      Math.abs(xAccessor(d) - hoveredDate);
-    const closestIndex = d3.scan(
-      dataset,
-      (a, b) => getDistanceFromHoveredDate(a) - getDistanceFromHoveredDate(b)
-    );
-    const closestDate = dataset[closestIndex];
-    const closestXValue = xAccessor(closestDate);
-
-    // Create list of all active states.
-    const activeStates = [];
-    const activeLinesHTML = document.getElementsByClassName(
-      `active_${chartKeyword}`
-    );
-    const activeLines = Array.from(activeLinesHTML);
-    activeLines.forEach(element => {
-      activeStates.push(element.getAttribute('id').split('_')[0]);
-    });
-
-    // Sort active states and prepend National so that national data is always on top.
-    const nationalSpelling =
-      _lang == 'pt-br' || _lang == 'es-ES' ? 'Nacional' : 'National';
-    activeStates.sort().unshift('Nacional');
-
-    // Clear tooltip content and remove any intersection dots
-    tooltipHeader.selectAll('*').remove();
-    tooltipContent.selectAll('*').remove();
-    bounds.selectAll(`.intersection_${chartKeyword}`).remove();
-
-    // position tooltipLine
-    tooltipLine
-      .style('opacity', 1)
-      .attr('x1', xScale(closestXValue))
-      .attr('x2', xScale(closestXValue));
-
-    // Add tooltipHeader text
-    tooltipHeader.append('span').html(formatDate(dateParser(closestDate.date)));
-
-    // populate tooltip with data
-    activeStates.forEach(element => {
-      // Get data for the specific state on the specific date
-      const state = dataset
-        .filter(d => stateCodeAccessor(d) == element)
-        .filter(d => d.date == closestDate.date);
-      const point = state[0];
-
-      const yValue = yAccessor(point);
-      const xValue = xAccessor(point);
-      const stateName =
-        element == 'Nacional' ? nationalSpelling : stateNameAccessor(point);
-      const color = element == 'Nacional' ? colorNational : colorScale(element);
-
-      // add row for state data in table
-      const dataRow = tooltipContent
-        .append('tr')
-        .attr('class', 'tooltip_state');
-
-      // add stateName
-      dataRow
-        .append('td')
-        .attr('class', 'tooltip_stateName')
-        .html(() => stateName)
-        .style('color', color);
-
-      dataRow
-        .append('td')
-        .attr('class', 'tooltip_stateValue')
-        .html(() => {
-          // TODO update this when Hector updates testpositivity_rate data to a 0 to 100 scale.
-          const multiplier =
-            usePercentage &&
-            yVariable == 'testpositivity_rate' &&
-            country == 'mexico'
-              ? 100
-              : 1;
-          const suffix = usePercentage ? '%' : '';
-          const value = d3.format('.1f')(yValue * multiplier);
-          if (value > 100) {
-            return 100 + suffix;
-          } else {
-            return value + suffix;
-          }
-        });
-
-      // add dots
-      bounds
-        .append('circle')
-        .attr('cx', xScale(xValue))
-        .attr('cy', yScale(yValue))
-        .attr('r', 7)
-        .attr('fill', color)
-        .attr('class', `intersection_${chartKeyword}`);
-    });
-  }
-
-  function onMouseLeave() {
-    const activeStates = [];
-    tooltip.style('opacity', 0);
-    tooltipLine.style('opacity', 0);
-    bounds.selectAll(`.intersection_${chartKeyword}`).remove();
-  }
+  //   if (this.checked) {
+  //     // checkbox just got turned on. Draw the active line and style the checkboxLabel
+  //     addStateLine(code);
+  //     checkboxLabel
+  //       .style('color', colorScale(code))
+  //       .style('font-weight', 'bold');
+  //   } else {
+  //     // checkbox just got turned off. Remove the active line and reset the checkboxLabel
+  //     bounds.select(`#${selector}`).remove();
+  //     checkboxLabel
+  //       .style('color', colorNational)
+  //       .style('font-weight', 'normal');
+  //   }
+  // }
 }
