@@ -38,7 +38,6 @@ async function indexLineChart({
   const stateCodeAccessor = d => d.state_short;
   const dayAccessor = d => +d.days;
   const metricAccessor = d => +d[`${yRank}`];
-
   // Organize data for visualizing
 
   // (a) remove values that are greater than 100%.
@@ -196,16 +195,17 @@ async function indexLineChart({
 
   const latestDay = d3.max(dataset.map(dayAccessor));
   const latestData = dataset.filter(d => dayAccessor(d) == latestDay);
-  const statesRanked = d3
-    .nest()
-    .key(metricAccessor)
-    .sortKeys(d3.ascending)
-    .entries(latestData);
 
+  // const statesRanked = d3
+  //   .nest()
+  //   .key(metricAccessor)
+  //   .sortKeys(d3.ascending)
+  //   .entries(latestData);
   // highlightStates is an array with the exact observations for the first and last ranked states to highlight
+  console.log(metricAccessor(latestData[1]))
   const highlightStates = [
-    statesRanked.filter(d => d.key == 1)[0].values[0],
-    statesRanked.filter(d => d.key == states.length)[0].values[0],
+    latestData.filter(d => metricAccessor(d) == 1)[0],
+    latestData.filter(d => metricAccessor(d) == states.length)[0].values[0],
   ];
 
   // This function draws the active version of a state line that the viewer can interact with
