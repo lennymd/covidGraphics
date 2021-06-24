@@ -197,6 +197,7 @@ async function indexLineChart({
   console.log('latest day', latestDay);
   const latestData = dataset.filter(d => dayAccessor(d) == latestDay);
 
+  console.log(latestData.sort());
   // const statesRanked = d3
   //   .nest()
   //   .key(metricAccessor)
@@ -204,9 +205,10 @@ async function indexLineChart({
   //   .entries(latestData);
   // highlightStates is an array with the exact observations for the first and last ranked states to highlight
 
+  console.log(latestData.filter(d => metricAccessor(d) == states.length)[0]);
   const highlightStates = [
     latestData.filter(d => metricAccessor(d) == 1)[0],
-    latestData.filter(d => metricAccessor(d) == states.length)[0].values[0],
+    latestData.filter(d => metricAccessor(d) == states.length)[0],
   ];
 
   // This function draws the active version of a state line that the viewer can interact with
