@@ -194,6 +194,7 @@ async function indexLineChart({
   // Rank Last will be d.key == states.length
 
   const latestDay = d3.max(dataset.map(dayAccessor));
+  console.log('latest day', latestDay);
   const latestData = dataset.filter(d => dayAccessor(d) == latestDay);
 
   // const statesRanked = d3
@@ -202,7 +203,7 @@ async function indexLineChart({
   //   .sortKeys(d3.ascending)
   //   .entries(latestData);
   // highlightStates is an array with the exact observations for the first and last ranked states to highlight
-  console.log(metricAccessor(latestData[1]))
+
   const highlightStates = [
     latestData.filter(d => metricAccessor(d) == 1)[0],
     latestData.filter(d => metricAccessor(d) == states.length)[0].values[0],
